@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs::{self}, io::{self, Read}};
 use anyhow::Result;
 use clap::Parser;
 use arboard::Clipboard;
@@ -15,29 +15,19 @@ pub struct Cli {
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    // Ensure a file path is provided
-    let path = match cli.input_file {
-        Some(p) => p,
-        None => {
-            eprintln!("Error: No input file provided.");
-            return Ok(());
-        }
-    };
-
-    // Read the file as UTF-8 text
-    let contents = match fs::read_to_string(&path) {
-        Ok(text) => text,
-        Err(err) => {
-            eprintln!("Error reading file {}: {}", path.display(), err);
-            return Ok(());
-        }
+    let contents = if let Some(path) = cli.input_file {
+        fs::read_to_string(&path)?
+    }else{
+        let mut buffer = String::new();
+        io::stdin().read_to_string(&mut buffer)?;
+        buffer
     };
 
     // Copy to clipboard
     let mut clipboard = Clipboard::new()?;
     clipboard.set_text(contents)?;
 
-    println!("File {} copied to clipboard!", path.display());
+    println!("Copied to clipboard!");
 
     Ok(())
 }
