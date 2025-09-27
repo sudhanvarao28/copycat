@@ -14,16 +14,16 @@
 
 ## Download Binaries
 
-Prebuilt binaries are available on the [GitHub Releases page](https://github.com/your-username/copycat/releases).
+Prebuilt binaries are available on the [GitHub Releases page](https://github.com/sudhanvarao28/copycat/releases).
 
 Available builds:
 
 | Platform | Archive | Download |
 |----------|---------|---------|
-| Linux x86_64 | `.tar.xz` | [Download](https://github.com/your-username/copycat/releases/latest/download/copycat-linux-x86_64.tar.xz) |
-| Windows x86_64 | `.zip` | [Download](https://github.com/your-username/copycat/releases/latest/download/copycat-windows-x86_64.zip) |
-| macOS x86_64 | `.tar.gz` | [Download](https://github.com/your-username/copycat/releases/latest/download/copycat-macos-x86_64.tar.gz) |
-| macOS ARM64 | `.tar.gz` | [Download](https://github.com/your-username/copycat/releases/latest/download/copycat-macos-arm64.tar.gz) |
+| Linux x86_64 | `.tar.xz` | [Download](https://github.com/sudhanvarao28/copycat/releases/download/v0.0.1/copycat-linux-x86_64.tar.xz) |
+| Windows x86_64 | `.zip` | [Download](https://github.com/sudhanvarao28/copycat/releases/download/v0.0.1/copycat-windows-x86_64.zip) |
+| macOS x86_64 | `.tar.gz` | [Download](https://github.com/sudhanvarao28/copycat/releases/download/v0.0.1/copycat-macos-x86_64.tar.gz) |
+| macOS ARM64 | `.tar.gz` | [Download](https://github.com/sudhanvarao28/copycat/releases/download/v0.0.1/copycat-macos-arm64.tar.gz) |
 
 > Replace `your-username` with your GitHub username.
 
