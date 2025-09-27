@@ -1,0 +1,75 @@
+name: release
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release Binaries
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            archive: tar.xz
+            suffix: linux-x86_64
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            archive: zip
+            suffix: windows-x86_64
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            archive: tar.gz
+            suffix: macos-x86_64
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            archive: tar.gz
+            suffix: macos-arm64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.target }}
+
+      - name: Build binary
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+          mkdir dist
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            cp target/${{ matrix.target }}/release/copycat.exe dist/copycat.exe
+          else
+            cp target/${{ matrix.target }}/release/copycat dist/copycat
+          fi
+          ls dist
+        shell: bash
+
+      - name: Package archive
+        run: |
+          cd dist
+          if [ "${{ matrix.archive }}" = "zip" ]; then
+            powershell -Command "Compress-Archive -Path copycat.exe -DestinationPath copycat-${{ matrix.suffix }}.zip"
+          elif [ "${{ matrix.archive }}" = "tar.xz" ]; then
+            tar -cJf copycat-${{ matrix.suffix }}.tar.xz copycat
+          else
+            tar -czf copycat-${{ matrix.suffix }}.tar.gz copycat
+          fi
+        shell: bash
+
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/copycat-*.zip
+            dist/copycat-*.tar.*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
